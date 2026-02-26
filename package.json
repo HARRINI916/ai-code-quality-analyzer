@@ -1,0 +1,10 @@
+{
+  "name": "ai-code-quality-analyzer-frontend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start:local": "powershell -ExecutionPolicy Bypass -File .\\scripts\\start-local.ps1"
+  }
+}
