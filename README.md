@@ -1,130 +1,174 @@
-# CodePulse AI
+**CODEPULSE AI**
 
-Multi-language AI code quality and complexity analyzer.  
-Current implementation in this repository uses `React + Vite + Monaco` frontend and `FastAPI` backend with Tree-sitter parser integration and ML-model fallback behavior.
+Project Overview
 
-## Features
+AI Code Quality and Complexity Analyzer is a web-based application that analyzes source code and provides insights about its quality, structure, and performance.
+The system performs static code analysis, calculates exact time complexity in Big-O notation, detects potential issues, runs test cases in a secure sandbox, and generates optimized versions of the code when possible.
+This project is designed to help students and developers understand code performance and improve algorithm efficiency.
 
-- Analyze source code for: Python, C, C++, Java, JavaScript, and Go.
-- Unified parser output via language parser abstraction.
-- `POST /analyze` API with:
-  - `complexity`
-  - `metrics` (LOC, functions, loops, nesting depth, cyclomatic complexity, comment ratio)
-  - `scores` (readability, maintainability, efficiency, safety, overall)
-  - `suggestions`
-- `POST /optimize` API to generate optimized code on demand and return optimization comparison metadata.
-- Monaco editor dashboard with language dropdown, loading state, dark mode, and responsive cards.
-- Docker Compose stack including backend, frontend, PostgreSQL, and Redis.
+**Features**
 
-## Project Structure
+Analyze code and compute exact time complexity (O(1), O(n), O(n²), etc.)
 
-- `backend/app/main.py`
-- `backend/app/api/routes.py`
-- `backend/app/api/schemas.py`
-- `backend/app/parsers/`
-- `backend/app/services/feature_extractor.py`
-- `backend/app/services/analyzer.py`
-- `backend/app/database/models.py`
-- `backend/app/ml/models/`
-- `frontend/src/pages/Dashboard.jsx`
-- `frontend/src/components/`
+Detect nested loops and recursion patterns
 
-## Local Run
+Provide detailed code metrics:
 
-### 1) Backend
+Lines of Code
 
-```powershell
-cd C:\Users\priya\Desktop\ai-code-quality-analyzer
-.\.venv\Scripts\python.exe -m pip install -r .\backend\requirements.txt
-.\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --reload
-```
+Number of Functions
 
-API docs: `http://localhost:8000/docs`
+Number of Loops
 
-Optional AI optimizer environment:
+Nesting Depth
 
-```powershell
-$env:OPENAI_API_KEY="your_api_key"
-$env:OPENAI_OPTIMIZER_MODEL="gpt-4.1-mini"
-```
+Cyclomatic Complexity
 
-If `OPENAI_API_KEY` is not set, `/optimize` uses deterministic rule-based optimizations.
+Show quality score breakdown:
 
-### 2) Frontend
+Readability
 
-```powershell
-cd C:\Users\priya\Desktop\ai-code-quality-analyzer\frontend
-npm install
-npm run dev
-```
+Maintainability
 
-App: `http://localhost:5173`
+Efficiency
 
-## API Contract
+Safety
 
-### Request
+Detect extra issues such as:
 
-`POST /analyze`
+Function defined but not called
 
-```json
-{
-  "code": "def add(a,b): return a+b",
-  "language": "python"
-}
-```
+Missing print/output statement
 
-### Response
+Run test cases in a secure sandbox environment
 
-```json
-{
-  "status": "success",
-  "complexity": "O(n)",
-  "metrics": {
-    "lines_of_code": 5,
-    "functions": 1,
-    "loops": 1,
-    "nesting_depth": 1,
-    "cyclomatic_complexity": 2,
-    "comment_ratio": 0.1
-  },
-  "scores": {
-    "readability": 78,
-    "maintainability": 80,
-    "efficiency": 82,
-    "safety": 88,
-    "overall": 82
-  },
-  "suggestions": [
-    "Code metrics look healthy. Maintain quality with regression tests."
-  ]
-}
-```
+Compare expected and actual output
 
-`POST /optimize`
+Automatically optimize inefficient code
 
-```json
-{
-  "original_complexity": "O(n^2)",
-  "optimized_code": "def optimized(...):\n    ...\n",
-  "optimized_complexity": "O(n)",
-  "complexity_improved": true,
-  "optimization_type": "algorithmic improvement",
-  "original_score": 65,
-  "optimized_score": 85,
-  "score_improvement": "+20",
-  "notes": "Nested loop replaced with hashmap/set lookup."
-}
-```
+Show side-by-side comparison of original and optimized code
 
-The optimizer re-analyzes generated code and guarantees optimized complexity is never worse than original; otherwise it returns the original code with explanatory `notes`.
+Display complexity improvement (example: O(n³) → O(n²))
 
-## Docker
+**Tech Stack**
 
-```powershell
-docker compose up --build
-```
+Frontend
 
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:8000`
-- Postgres: `localhost:5432`
-- Redis: `localhost:6379`
+React (Vite)
+
+Tailwind CSS
+
+Monaco Editor
+
+Backend
+
+FastAPI (Python)
+
+AST-based static analysis
+
+Secure sandbox execution
+
+Tools and Concepts
+
+Big-O complexity detection
+
+Code optimization logic
+
+Docker-based isolated execution (if enabled)
+
+Structural output comparison
+
+**Project Structure**
+
+ai-code-quality-analyzer/
+
+    │
+    ├── frontend/               # React frontend
+    │   ├── src/
+    │   ├── components/
+    │   └── pages/
+    │
+    ├── backend/                # FastAPI backend
+    │   ├── app/
+    │   │   ├── routes/
+    │   │   ├── services/
+    │   │   └── models/
+    │   └── requirements.txt
+    │
+    ├── README.md
+    └── .gitignore
+    
+**Application Workflow**
+
+Page 1 – Code Editor
+User writes or pastes code
+
+Click Analyze to go to analysis page
+
+Click Optimize to directly generate optimized version
+
+Page 2 – Analysis and Test Cases
+
+Shows:
+
+Exact Big-O complexity
+
+Code metrics
+
+Score breakdown
+
+User can add test cases
+
+Run test cases and see:
+
+Actual output
+
+Expected output
+
+Pass or Fail
+
+Execution time
+
+Page 3 – Optimization and Comparison
+
+Displays original code
+
+Displays optimized code
+
+Shows complexity comparison
+
+Shows score improvement
+
+**Running the Project Locally**
+
+1.Clone the repository
+   
+    git clone https://github.com/yourusername/ai-code-quality-analyzer.git
+    cd ai-code-quality-analyzer
+   
+2.Setup Backend
+
+    cd backend
+    pip install -r requirements.txt
+    uvicorn app.main:app --reload
+      
+3.Backend runs at:
+
+    http://localhost:8000
+      
+4.Setup Frontend
+Open a new terminal:
+
+    cd frontend
+    npm install
+    npm run dev
+5.Frontend runs at:
+      
+    http://localhost:5173
+    
+**Author**
+
+Harrini D S
+
+GitHub: https://github.com/HARRINI916
+
